@@ -1,0 +1,1 @@
+"""Possession network definitions."""

@@ -1,0 +1,12 @@
+{
+  "batch": 8,
+  "sample_step": 2,
+  "steps": 420,
+  "training_matches": [
+    "dfl_J03WMX",
+    "dfl_J03WN1",
+    "dfl_J03WOH",
+    "dfl_J03WOY"
+  ],
+  "base_config": "base-config.json"
+}

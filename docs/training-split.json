@@ -1,0 +1,97 @@
+{
+  "version": "v1",
+  "sources": {
+    "dfl": {
+      "release": "https://doi.org/10.6084/m9.figshare.28196177.v1",
+      "native_hz": 25,
+      "label_source": "Provider possession and explicit live/dead flags"
+    },
+    "skillcorner_a_league": {
+      "release": "https://github.com/SkillCorner/opendata/tree/4340d274572876239c154c90bc507a9b3250a656",
+      "native_hz": 10,
+      "label_source": "Provider H/A, with phase-gap D as a weak training proxy, not verified dead-ball truth"
+    },
+    "skillcorner_legacy": {
+      "release": "https://github.com/SkillCorner/opendata/tree/1b99d401ddc82e366c5c20d6860878668fd5858f",
+      "native_hz": 10,
+      "label_source": "Provider H/A only; unknown frames stay masked"
+    }
+  },
+  "training_pool": {
+    "dfl": [
+      "J03WMX",
+      "J03WN1",
+      "J03WOH",
+      "J03WOY",
+      "J03WPY"
+    ],
+    "skillcorner_a_league": [
+      "1874553",
+      "1886347",
+      "1899585",
+      "1925299",
+      "1927964",
+      "1953632",
+      "1959846",
+      "1986691",
+      "1996435",
+      "1996436",
+      "2006229",
+      "2006363",
+      "2007448",
+      "2007721",
+      "2010085",
+      "2011166",
+      "2013725",
+      "2015213",
+      "2016236",
+      "2017461"
+    ],
+    "skillcorner_legacy": [
+      "4039",
+      "3749",
+      "3518",
+      "2440",
+      "2417",
+      "2269",
+      "2068"
+    ]
+  },
+  "development": {
+    "shared_default": {
+      "source": "dfl",
+      "match": "J03WMX"
+    },
+    "notes": "Each development fold holds out one full match. Run records identify the match scored and the matches used for fitting."
+  },
+  "held_out": {
+    "ranked": {
+      "source": "dfl",
+      "matches": [
+        "J03WQQ",
+        "J03WR9"
+      ],
+      "metrics": [
+        "spell F1",
+        "macro F1"
+      ],
+      "scorer": "https://github.com/metrica-sports/more-than-a-hack-2027/blob/main/evaluation/possession_metrics.py",
+      "scorer_sha256": "341bad48904b489d6e875397b27687f5d6a4d22a397f3dc8af3a00d48f16874d"
+    },
+    "spanish_robustness": {
+      "source": "skillcorner_legacy",
+      "matches": [
+        "2841",
+        "3442"
+      ],
+      "notes": "We score H/A at native timing on labeled frames and report those results separately. These matches are held out from fitting and tuning."
+    }
+  },
+  "evaluation_notes": [
+    "The training pool is an inventory. We check the source, usage rights, file checksums and label mapping for the matches a run uses.",
+    "All halves, resampled copies and degraded variants retain their match's split. Both test sets are reserved for final evaluation.",
+    "Run records identify the matches used, their label sources, the development split and the dataset version. Only the DFL test pair is used for ranking.",
+    "Robustness comparisons use the same dropout masks across models. The masks and possession-label views come from external matches.",
+    "We use the organizer's public five minutes to check the pipeline. Training and model selection use external matches."
+  ]
+}
