@@ -4,9 +4,9 @@
 
 For each frame of tactical tracking, the model estimates home possession, away possession or dead ball. It writes `X` outside the graded halves.
 
-1. Three temporal convolutional networks read nearby frames for ball movement, player distance and contact. A tactics model reads how both teams move and spread out, which provides evidence when the ball disappears.
-2. The decoder gives the convolutional and tactics predictions equal weight and joins successive frames into possessions. A loose ball stays with the current team until there is enough evidence of a change.
-3. A visible ball exit helps place the start of a stoppage. Sustained contact with the receiving player helps time a turnover. A separate detector proposes short possessions that the first timeline may have merged. The final rules check these proposals against ball motion, player movement and surrounding play.
+1. Three temporal convolutional networks read nearby frames for ball movement, player distance and contact. A short window helps because the nearest player can change while a pass is still in flight. Their probabilities are averaged into one estimate. A tactics model reads how both teams move and spread out. When the ball is hidden, the shape and movement of the teams still suggest who has it.
+2. The decoder blends the averaged convolutional estimate and the tactics estimate with equal weight. It chooses a sequence for each half, with a cost for switching teams or moving between live play and dead ball. Picking the most likely label frame by frame would let guesses alternate between teams and break one possession into many fragments. A loose ball therefore stays with the current team until there is enough evidence of a change. The cost is that a genuine short turnover can be absorbed into the surrounding possession.
+3. Tracking can pinpoint where a possession begins or ends. A visible ball exit helps place the start of a stoppage. Sustained contact with the receiving player helps time a turnover. A separate detector looks for short possessions missing from the draft, such as a brief interception followed by an immediate regain. The final corrections weigh these proposals against the tracking evidence and the play on either side.
 
 The [architecture diagram](docs/architecture.pdf) shows the full path and the three kinds of model.
 
